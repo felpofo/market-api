@@ -1,3 +1,6 @@
+postgres.yaml
+yarn.lock
+
 # Logs
 logs
 *.log
