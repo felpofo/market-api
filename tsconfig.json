@@ -8,14 +8,15 @@
     "lib": ["ES6", "ES2020"],
     "module": "CommonJS",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "paths": {
-      "@/*": ["src/*", "build/*"],
-      "@controllers/*": ["src/controllers/*", "build/controllers/*"],
-      "@services/*": ["src/services/*", "build/services/*"],
-      "@middlewares/*": ["src/middlewares/*", "build/middlewares/*"]
-    }
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "types": ["node", "jest"]
   },
   "include": ["src"],
-  "exclude": ["node_modules", "build", "tests"]
 }

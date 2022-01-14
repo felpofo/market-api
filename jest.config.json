@@ -1,0 +1,7 @@
+{
+  "setupFiles": ["dotenv/config"],
+  "preset": "ts-jest",
+  "verbose": true,
+  "testEnvironment": "node",
+  "testRegex": "(/__tests__/.*|(\\.|/)(test))\\.(ts)$"
+}
