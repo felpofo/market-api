@@ -8,35 +8,43 @@ datasource db {
 }
 
 model Category {
-  id   Int    @id @default(autoincrement())
-  name String
+  id   String @id @default(uuid())
+  name String @unique
 
   products Product[]
 
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("categories")
 }
 
 model Brand {
-  id      Int    @id @default(autoincrement())
-  name    String
-  contact String @unique
+  id      String @id @default(uuid())
+  name    String @unique
+  contact String
 
   products Product[]
 
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("brands")
 }
 
 model Product {
-  id          Int    @id @default(autoincrement())
-  name        String @unique
-  description String
+  id          String  @id @default(uuid())
+  name        String
+  description String? @default("")
+  pictures    Json?
 
-  price    Float
-  quantity Int   @default(0)
-  brandId  Int
+  price       Float
+  isAvailable Boolean @default(true)
+  weight      Float   @default(0)
 
-  brand      Brand      @relation(fields: [brandId], references: [id])
   categories Category[]
+  brand      Brand      @relation(fields: [brandId], references: [id])
+  brandId    String
 
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("products")
 }

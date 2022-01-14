@@ -1,4 +1,4 @@
-postgres.yaml
+docker-compose.yml
 yarn.lock
 
 logs

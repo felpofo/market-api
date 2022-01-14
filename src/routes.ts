@@ -5,10 +5,10 @@ const prisma = new PrismaClient();
 export const routes = Router();
 
 routes.get("/", (req, res) => {
-  res.json({ message: "alive" });
+  res.status(200).json({ message: "alive" });
 });
 
-routes.post("/category", async (req, res) => {
+routes.post("/create/category", async (req, res) => {
   const name: string = req.body.name;
 
   const category = await prisma.category.create({ data: { name } });

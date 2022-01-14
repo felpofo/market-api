@@ -1,0 +1,14 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:10.3-alpine
+    ports:
+      - "4444:4444"
+    network_mode: bridge
+    container_name: postgres_docker
+    environment:
+      - POSTGRES_USER=prisma
+      - POSTGRES_PASSWORD=thewok
+      - POSTGRES_DB=prisma
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
