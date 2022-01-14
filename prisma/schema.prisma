@@ -7,6 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum WeightTypes {
+  G
+  L
+}
+
 model Category {
   id   String @id @default(uuid())
   name String @unique
@@ -37,8 +42,9 @@ model Product {
   pictures    Json?
 
   price       Float
-  isAvailable Boolean @default(true)
-  weight      Float   @default(0)
+  isAvailable Boolean     @default(true)
+  weight      Float       @default(0)
+  weightType  WeightTypes @map("weight_type")
 
   categories Category[]
   brand      Brand      @relation(fields: [brandId], references: [id])

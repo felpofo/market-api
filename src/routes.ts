@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+import { prisma } from "./utils";
+
 export const routes = Router();
 
 routes.get("/", (req, res) => {
@@ -20,7 +20,7 @@ routes.post("/create/category", async (req, res) => {
 });
 
 routes.get("/category/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
 
   const category = await prisma.category.findUnique({ where: { id } });
 

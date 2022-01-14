@@ -1,94 +1,44 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../src/utils";
 
-const client = new PrismaClient();
-
-// A `main` function so that we can use async/await
 async function main() {
-  // Seed the database with users and posts
-  // const user1 = await client.user.create({
-  //   data: {
-  //     email: "alice@prisma.io",
-  //     name: "Alice",
-  //     posts: {
-  //       create: {
-  //         title: "Watch the talks from Prisma Day 2019",
-  //         content: "https://www.prisma.io/blog/z11sg6ipb3i1/",
-  //         published: true,
-  //       },
-  //     },
-  //   },
-  //   include: {
-  //     posts: true,
-  //   },
-  // });
-  // const user2 = await client.user.create({
-  //   data: {
-  //     email: "bob@prisma.io",
-  //     name: "Bob",
-  //     posts: {
-  //       create: [
-  //         {
-  //           title: "Subscribe to GraphQL Weekly for community news",
-  //           content: "https://graphqlweekly.com/",
-  //           published: true,
-  //         },
-  //         {
-  //           title: "Follow Prisma on Twitter",
-  //           content: "https://twitter.com/prisma/",
-  //           published: false,
-  //         },
-  //       ],
-  //     },
-  //   },
-  //   include: {
-  //     posts: true,
-  //   },
-  // });
-  // console.log(
-  //   `Created users: ${user1.name} (${user1.posts.length} post) and (${user2.posts.length} posts) `
-  // );
-  // // Retrieve all published posts
-  // const allPosts = await client.post.findMany({
-  //   where: { published: true },
-  // });
-  // console.log(`Retrieved all published posts: `, allPosts);
-  // // Create a new post (written by an already existing user with email alice@prisma.io)
-  // const newPost = await client.post.create({
-  //   data: {
-  //     title: "Join the Prisma Slack community",
-  //     content: "http://slack.prisma.io",
-  //     published: false,
-  //     author: {
-  //       connect: {
-  //         email: "alice@prisma.io",
-  //       },
-  //     },
-  //   },
-  // });
-  // console.log(`Created a new post: `, newPost);
-  // // Publish the new post
-  // const updatedPost = await client.post.update({
-  //   where: {
-  //     id: newPost.id,
-  //   },
-  //   data: {
-  //     published: true,
-  //   },
-  // });
-  // console.log(`Published the newly created post: `, updatedPost);
-  // // Retrieve all posts by user with email alice@prisma.io
-  // const postsByUser = await client.user
-  //   .findOne({
-  //     where: {
-  //       email: "alice@prisma.io",
-  //     },
-  //   })
-  //   .posts();
-  // console.log(`Retrieved all posts from a specific user: `, postsByUser);
+  await prisma.product.create({
+    data: {
+      name: "Coca-Cola",
+      price: 8.99,
+      weight: 2,
+      weightType: "L",
+      brand: {
+        create: {
+          name: "CVI",
+          contact: "cvicompany@cvicompany.com",
+        },
+      },
+      isAvailable: true,
+      description: "singaro da cancer",
+      categories: {
+        create: {
+          name: "Refrigerantes",
+        },
+      },
+    },
+  });
+
+  console.log(
+    "Created products: ",
+    (await prisma.product.findMany()).map((v) => v.name).join(", ")
+  );
+  console.log(
+    "Created brands: ",
+    (await prisma.brand.findMany()).map((v) => v.name).join(", ")
+  );
+  console.log(
+    "Created categories: ",
+    (await prisma.category.findMany()).map((v) => v.name).join(", ")
+  );
 }
 
 main()
-  .catch((e) => console.error(e))
+  .catch((err) => console.error(err))
   .finally(async () => {
-    await client.$disconnect();
+    await prisma.$disconnect();
   });

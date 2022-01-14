@@ -1,5 +1,9 @@
 import "colors";
 
+import { PrismaClient } from "@prisma/client";
+
+export const prisma = new PrismaClient();
+
 export function info(message?: string) {
   console.log(`[ ${"INFO".cyan} ] ${message}`);
 }

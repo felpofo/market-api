@@ -5,7 +5,8 @@ logs
 pids
 initdb
 coverage
-node_modules/
+node_modules
+postgres
 
 *.log
 *.pid

@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "WeightTypes" AS ENUM ('G', 'L');
+
 -- CreateTable
 CREATE TABLE "categories" (
     "id" TEXT NOT NULL,
@@ -26,6 +29,7 @@ CREATE TABLE "products" (
     "price" DOUBLE PRECISION NOT NULL,
     "isAvailable" BOOLEAN NOT NULL DEFAULT true,
     "weight" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "weight_type" "WeightTypes" NOT NULL,
     "brandId" TEXT NOT NULL,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
