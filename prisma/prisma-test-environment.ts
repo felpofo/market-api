@@ -7,7 +7,6 @@ import util from "util";
 import type { Config } from "@jest/types";
 import { nanoid } from "nanoid";
 import { Client } from "pg";
-import { prisma } from "@prisma/client";
 
 const exec = util.promisify(require("child_process").exec);
 const prismaBinary = "./node_modules/.bin/prisma2";

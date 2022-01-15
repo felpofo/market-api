@@ -3,78 +3,73 @@ import request from "supertest";
 import * as faker from "faker";
 
 import { app } from "../src/app";
-import { prisma } from "../src/utils";
+import { Category, PrismaClient } from "@prisma/client";
 
 describe("HTTP", () => {
+  const prisma = new PrismaClient();
   beforeEach(() => {
     jest.useFakeTimers();
   });
 
+  afterAll(() => {
+    prisma.$disconnect();
+    setTimeout(() => process.exit(), 1000);
+  });
+
   describe("GET", () => {
-    test("/", async () => {
-      await request(app)
+    test("/", () => {
+      request(app)
         .get("/")
         .set("Accept", "application/json")
         .expect("Content-Type", /text/)
         .expect(200)
-        .then((res) => {
+        .end((err, res) => {
+          if (err) throw err;
+
           expect(res.body).toEqual({});
-        })
-        .catch((err) => {
-          throw err;
         });
     });
 
-    test("/category", async () => {
-      await request(app)
-        .get("/categories")
+    test("/category", () => {
+      request(app)
+        .get("/category")
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
         .expect(200)
-        .then((res) => {
+        .end((err, res) => {
+          if (err) throw err;
+
           expect(res.body.data).toEqual([]);
-        })
-        .catch((err) => {
-          throw err;
         });
     });
 
-    test("/category/:id", async () => {
-      const category = await prisma.category.create({
-        data: {
-          name: faker.commerce.department(),
-        },
-      });
-
-      await request(app)
-        .get("/category/:id")
+    test("/category/:id", () => {
+      request(app)
+        .get("/category/99999999999999999999")
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
         .expect(200)
-        .then((res) => {
-          expect(res.body.data).toMatchObject(category);
-        })
-        .catch((err) => {
-          throw err;
+        .end((err, res) => {
+          if (err) throw err;
+
+          expect(res.body.data).toMatchObject({});
         });
     });
   });
 
   describe("POST", () => {
     describe("/create", () => {
-      test("/category", async () => {
-        await request(app)
+      test("/category", () => {
+        request(app)
           .post("/create/category")
           .send({ name: faker.commerce.department() })
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
           .expect(201)
-          .then((res) => {
-            expect(res.body).toHaveProperty("message");
-            expect(res.body).toHaveProperty("data");
-          })
-          .catch((err) => {
-            throw err;
+          .end((err, res) => {
+            if (err) throw err;
+
+            expect(res.body).toHaveProperty(["message", "data"]);
           });
       });
     });
