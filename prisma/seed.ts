@@ -1,6 +1,7 @@
-import { prisma } from "../src/utils";
+/* eslint-disable no-async-promise-executor */
+import { PrismaClient } from "@prisma/client";
 
-async function main() {
+export async function seed(prisma: PrismaClient) {
   await prisma.product.create({
     data: {
       name: "Coca-Cola",
@@ -35,10 +36,6 @@ async function main() {
     "Created categories: ",
     (await prisma.category.findMany()).map((v) => v.name).join(", ")
   );
-}
 
-main()
-  .catch((err) => console.error(err))
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  prisma.$disconnect();
+}

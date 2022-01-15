@@ -7,6 +7,7 @@ import util from "util";
 import type { Config } from "@jest/types";
 import { nanoid } from "nanoid";
 import { Client } from "pg";
+import { prisma } from "@prisma/client";
 
 const exec = util.promisify(require("child_process").exec);
 const prismaBinary = "./node_modules/.bin/prisma2";
@@ -27,6 +28,7 @@ export default class PrismaTestEnvironment extends NodeEnvironment {
     this.global.process.env.DATABASE_URL = this.connectionString;
 
     await exec(`${prismaBinary} generate`);
+    await exec(`${prismaBinary} migrate dev`);
 
     return super.setup();
   }

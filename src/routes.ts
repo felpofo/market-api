@@ -1,11 +1,25 @@
 import { Router } from "express";
-
 import { prisma } from "./utils";
+
+// import * as c from "./controllers";
+// import * as m from "./middlewares";
 
 export const routes = Router();
 
-routes.get("/", (req, res) => {
-  res.status(200).json({ message: "alive" });
+routes.get("/", (req, res) => res.sendStatus(200));
+
+routes.get("/category", async (req, res) => {
+  const allCategories = await prisma.category.findMany();
+  
+  res.status(200).json({ data: allCategories });
+});
+
+routes.get("/category/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const category = await prisma.category.findUnique({ where: { id } });
+
+  res.status(200).json({ data: { category } });
 });
 
 routes.post("/create/category", async (req, res) => {
@@ -17,18 +31,4 @@ routes.post("/create/category", async (req, res) => {
     message: "Category Created",
     data: { category },
   });
-});
-
-routes.get("/category/:id", async (req, res) => {
-  const id = req.params.id;
-
-  const category = await prisma.category.findUnique({ where: { id } });
-
-  res.status(200).json({ data: { category } });
-});
-
-routes.get("/categories", async (req, res) => {
-  const allCategories = await prisma.category.findMany({});
-
-  res.status(200).json({ data: allCategories });
 });
